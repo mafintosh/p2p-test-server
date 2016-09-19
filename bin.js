@@ -5,6 +5,7 @@ var level = require('level')
 var http = require('http')
 var pump = require('pump')
 var through = require('through2')
+var ipinfo = require('get-ipinfo')
 
 var db = level('p2p-test-server.db', {valueEncoding: 'json'})
 var socket = dgram.createSocket('udp4')
@@ -89,17 +90,29 @@ function ondata (req, res) {
   res.write('[')
 
   var prev = false
+  var transform = through.obj(write, flush)
 
-  pump(db.createValueStream(), through.obj(write, flush), res)
+  pump(db.createReadStream(), transform, res)
+
+  function getInfo (data, enc, cb) {
+    ipinfo(data.value.pings[0].host, function (err, info) {
+      if (err) return write(data, enc, cb)
+      data.value.ipinfo = info
+      db.put(data.key, data.value, function () {
+        write(data, enc, cb)
+      })
+    })
+  }
 
   function write (data, enc, cb) {
-    this.push((prev ? ', ' : '') + JSON.stringify(data, null, 2))
+    if (!data.value.ipinfo) return getInfo(data, enc, cb)
+    transform.push((prev ? ', ' : '') + JSON.stringify(data.value, null, 2))
     prev = true
     cb(null)
   }
 
   function flush (cb) {
-    this.push(']\n')
+    transform.push(']\n')
     cb(null)
   }
 }
