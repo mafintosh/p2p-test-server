@@ -7,6 +7,7 @@
     "p2p-test-server": "./bin.js"
   },
   "dependencies": {
+    "corsify": "^2.1.0",
     "get-ipinfo": "^1.0.0",
     "level": "^1.4.0",
     "pump": "^1.0.1",

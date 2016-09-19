@@ -6,6 +6,7 @@ var http = require('http')
 var pump = require('pump')
 var through = require('through2')
 var ipinfo = require('get-ipinfo')
+var corsify = require('corsify')
 
 var db = level('p2p-test-server.db', {valueEncoding: 'json'})
 var socket = dgram.createSocket('udp4')
@@ -59,12 +60,12 @@ socket.on('message', function (message, from) {
 
 socket.bind(10000)
 
-var server = http.createServer(function (req, res) {
+var server = http.createServer(corsify(function (req, res) {
   if (req.url === '/') return ondigest(req, res)
   if (req.url === '/data') return ondata(req, res)
   res.statusCode = 404
   res.end()
-})
+}))
 
 server.listen(process.env.PORT || 8080, function () {
   console.log('Server is listening on port ' + server.address().port)
