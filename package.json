@@ -7,14 +7,13 @@
     "p2p-test-server": "./bin.js"
   },
   "dependencies": {
-    "corsify": "^2.1.0",
-    "get-ipinfo": "^1.0.0",
-    "level": "^1.4.0",
-    "pump": "^1.0.1",
-    "through2": "^2.0.1"
+    "@hyperswarm/dht": "^5.0.23",
+    "hypercore": "^10.0.0-alpha.34",
+    "hyperswarm": "^3.0.4",
+    "minimist": "^1.2.6"
   },
   "devDependencies": {
-    "standard": "^8.0.0"
+    "standard": "^16.0.4"
   },
   "scripts": {
     "test": "standard"

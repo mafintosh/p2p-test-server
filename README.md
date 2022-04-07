@@ -7,8 +7,7 @@ npm install -g p2p-test-server
 p2p-test-server
 ```
 
-Visit http://localhost:8080 for a digest of the current tests.
-
+Puts the results in a Hypercore, the key is printed.
 See https://github.com/mafintosh/p2p-test for the client tool to run the tests.
 
 ## License
