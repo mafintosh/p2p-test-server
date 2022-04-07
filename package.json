@@ -1,6 +1,6 @@
 {
   "name": "p2p-test-server",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Server to test potential p2p connectivity for various networks",
   "main": "index.js",
   "bin": {
